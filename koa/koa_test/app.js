@@ -28,7 +28,7 @@ const handler = async (ctx, next) => {
 };
 
 const main = ctx => {
-  ctx.throw(500);
+  // ctx.throw(500);
 };
 
 app.on('error', function(err) {
