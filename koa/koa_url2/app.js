@@ -1,33 +1,56 @@
+// const Koa = require('koa');//对Node.js的http进行了封装
+// const router = require('koa-router')();
+// const bodyParser = require('koa-bodyparser');//解析request的body
+// const fs = require('fs');
+// var files = fs.readdirSync(__dirname + '/controllers');//“指定目录下所有文件名称”的数组对象
+// var js_files = files.filter((f) => {
+//     return f.endsWith('.js');
+// });
+// for (var f of js_files) {
+//     let mapping = require(__dirname + '/controllers/' + f);
+//     for (var url in mapping) {
+//         if (url.startsWith('GET ')) {
+//             var path = url.substring(4);
+//             router.get(path, mapping.url);
+//         } else if (url.startsWith('POST ')) {
+//             var path = url.substring(5);
+//             router.post(path, mapping.url);
+//         } else {
+//             console.log(`Invalid URL:${url}`);
+//         }
+//     }
+// }
+// const app = new Koa();// 创建一个Koa对象表示web app本身:
+// app.use(bodyParser());//koa-bodyparser必须在router之前被注册到app对象上
+// app.use(async (ctx, next) => {
+//     console.log(`Process ${ctx.request.method}`);
+//     await next();
+// });
+// router.get('/hello/:name', aaa.fn_);
+// router.get('/', aaa.fn_
+// );
+// router.post('/signin', aaa.fn_
+// );
+// app.use(router.routes());
 const Koa = require('koa');
-const router = require('koa-router')();
+
 const bodyParser = require('koa-bodyparser');
+
+const controller = require('./controllers');
+
 const app = new Koa();
-app.use(bodyParser());
+
+// log request URL:
 app.use(async (ctx, next) => {
-    console.log(`Process ${ctx.request.method}`);
+    console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
     await next();
 });
-router.get('/hello/:name', async (ctx, next) => {
-    var name = ctx.params.name;
-    ctx.response.body = `<h1>Hello,${name}</h1>`;
-});
-router.get('/', async (ctx, next) => {
-    ctx.response.body = `<h1>Index</h1>
-        <form action="/signin" method="post">
-            <p>Name: <input name="name" value="koa"></p>
-            <p>Password: <input name="password" type="password"></p>
-            <p><input type="submit" value="Submit"></p>
-        </form>`;
-});
-router.post('/signin', async (ctx, next) => {
-    var name = ctx.request.body.name || '',
-        password = ctx.request.body.password || '';
-    if (name === 'zyt' && password === '11111') {
-        ctx.response.body = `<h1>Welcome,${name}</h1>`;
-    } else {
-        ctx.response.body = `<h1>Login failed!</h1>
-        <p><a href="/">Try again</a></p>`;
-    }
-});
-app.use(router.routes());
+
+// parse request body:
+app.use(bodyParser());
+
+// add controllers:
+app.use(controller());
+
 app.listen(9000);
+console.log('app started at port 9000...');

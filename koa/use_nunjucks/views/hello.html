@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>模板引擎渲染页面</title>
 </head>
 <body>
-$END$
+    <h1 style="text-align: center">Hello {{name}}!</h1>
+    <h3>Fruits List</h3>
+{% for f in fruits %}
+    <p>{{ f }}</p>
+{% endfor %}
+    <p>Total: {{ count|hex }}</p>
 </body>
 </html>
