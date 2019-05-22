@@ -38,8 +38,9 @@ var s = env.render('hello.html', {
     count: 12000
 });
 // console.log(s);
-router.get('/', function (req, res) {
-    env.render('hello.html', {
+router.get('/', async (ctx, next) => {
+    ctx.response.type = 'html';
+    ctx.response.body = env.render('hello.html', {
         name: '<Nunjucks>',
         fruits: ['Apple', 'Pear', 'Banana'],
         count: 12000
